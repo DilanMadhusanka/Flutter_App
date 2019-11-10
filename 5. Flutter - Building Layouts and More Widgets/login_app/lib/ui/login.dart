@@ -11,6 +11,22 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   final TextEditingController _userController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
+  String _welcomeString = "";
+  void _erase() {
+    setState(() {
+     _userController.clear();
+     _passwordController.clear(); 
+    });
+  }
+  void _showWelcome() {
+    setState(() {
+     if(_userController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+       _welcomeString = _userController.text;
+     } else {
+       _welcomeString = "Nothing!";
+     }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -57,7 +73,7 @@ class LoginState extends State<Login> {
                         new Container(
                           margin: const EdgeInsets.only(left: 38.0),
                           child: new RaisedButton(
-                            onPressed: ()=>debugPrint("Login"),
+                            onPressed: _showWelcome,
                             color: Colors.redAccent,
                             child: new Text(
                               "Login",
@@ -71,7 +87,7 @@ class LoginState extends State<Login> {
                         new Container(
                           margin: const EdgeInsets.only(left: 120.0),
                           child: new RaisedButton(
-                            onPressed: ()=>debugPrint("Clear"),
+                            onPressed: _erase,
                             color: Colors.redAccent,
                             child: new Text(
                               "Clear",
@@ -93,7 +109,7 @@ class LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text(
-                  "Welcome",
+                  "Welcome $_welcomeString",
                   style: new TextStyle(
                     color:Colors.white,
                     fontSize: 19.4,
