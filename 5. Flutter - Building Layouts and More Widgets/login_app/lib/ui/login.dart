@@ -38,7 +38,7 @@ class LoginState extends State<Login> {
       backgroundColor: Colors.blueGrey,
       body: new Container(
         alignment: Alignment.topCenter,
-        child: new Column(
+        child: new ListView(
           children: <Widget>[
             new Image.asset(
               'images/face.png',
@@ -65,6 +65,7 @@ class LoginState extends State<Login> {
                       hintText: 'Password',
                       icon: new Icon(Icons.lock)
                     ),
+                    obscureText: true,
                   ),
                   new Padding(padding: new EdgeInsets.all(10.5),),
                   new Center(
