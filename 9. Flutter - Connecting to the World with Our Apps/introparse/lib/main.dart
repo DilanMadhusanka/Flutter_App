@@ -4,8 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 void main() async {
-  String _data = await getJson();
-  print(_data);
+  List _data = await getJson();
+  print(_data[0]['userId']);
+  print(_data[1]['title']);
   runApp(new MaterialApp(
     home: new Scaffold(
       appBar: new AppBar(
@@ -21,8 +22,8 @@ void main() async {
 }
 
 
-Future<String> getJson() async {
+Future<List> getJson() async {
   String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
   http.Response response = await http.get(apiUrl);
-  return json.decode(response.body).toString();
+  return json.decode(response.body);
 }
