@@ -5,8 +5,17 @@ import 'package:http/http.dart' as http;
 
 void main() async {
   List _data = await getJson();
+  String _body = "";
   print(_data[0]['userId']);
   print(_data[1]['title']);
+
+  for(int i = 0; i<_data.length; i++) {
+    print("Id: ${_data[i]['id']}");
+    print("Body: ${_data[i]['body']}");
+  }
+
+  _body = _data[0]['body'];
+
   runApp(new MaterialApp(
     home: new Scaffold(
       appBar: new AppBar(
@@ -15,7 +24,7 @@ void main() async {
         backgroundColor: Colors.orangeAccent,
       ),
       body: new Center(
-        child: new Text('Parsing...'),
+        child: new Text('Parsing...$_body'),
       ),
     ),
   ));
