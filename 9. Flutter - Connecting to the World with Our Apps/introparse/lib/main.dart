@@ -24,7 +24,17 @@ void main() async {
         backgroundColor: Colors.orangeAccent,
       ),
       body: new Center(
-        child: new Text('Parsing...$_body'),
+        child: new ListView.builder(
+          itemCount: _data.length,
+          padding: const EdgeInsets.all(16.0),
+          itemBuilder: (BuildContext context, int position) {
+            if(position.isOdd) return new Divider();
+            return new ListTile(
+              title: new Text("${_data[position]['id']}: ${_data[position]['title']}",
+              style: new TextStyle(fontSize: 18.9),),
+            );
+          },
+        )
       ),
     ),
   ));
