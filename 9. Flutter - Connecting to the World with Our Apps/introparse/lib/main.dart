@@ -29,9 +29,23 @@ void main() async {
           padding: const EdgeInsets.all(16.0),
           itemBuilder: (BuildContext context, int position) {
             if(position.isOdd) return new Divider();
+            final index = position ~/ 2;
             return new ListTile(
-              title: new Text("${_data[position]['id']}: ${_data[position]['title']}",
-              style: new TextStyle(fontSize: 18.9),),
+              title: new Text("${_data[index]['id']}: ${_data[index]['title']}",
+              style: new TextStyle(fontSize: 14.9),),
+              subtitle: new Text("${_data[index]['body']}",
+              style: new TextStyle(
+                fontSize: 13.4,
+                color: Colors.grey,
+                fontStyle: FontStyle.italic
+                )
+              ),
+              leading: new CircleAvatar(
+                backgroundColor: Colors.green,
+                child: new Text("${_data[index]['title'][0].toString().toUpperCase()}",
+                style: new TextStyle(fontSize: 13.4, color: Colors.orangeAccent),),
+              ),
+              onTap: ()=> debugPrint("${_data[index]['id']}"),
             );
           },
         )
