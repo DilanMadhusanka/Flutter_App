@@ -45,7 +45,7 @@ void main() async {
                 child: new Text("${_data[index]['title'][0].toString().toUpperCase()}",
                 style: new TextStyle(fontSize: 13.4, color: Colors.orangeAccent),),
               ),
-              onTap: ()=> debugPrint("${_data[index]['id']}"),
+              onTap: () {_showOnTapMessage(context,"${_data[index]['title']}");}
             );
           },
         )
@@ -54,6 +54,19 @@ void main() async {
   ));
 }
 
+void _showOnTapMessage(BuildContext context, String message) {
+  var alert = new AlertDialog(
+    title: new Text('App'),
+    content: new Text(message),
+    actions: <Widget>[
+      new FlatButton(
+        onPressed: (){Navigator.pop(context);},
+        child: new Text('OK'),
+      )
+    ],
+  );
+  showDialog(context: context, child: alert);
+}
 
 Future<List> getJson() async {
   String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
