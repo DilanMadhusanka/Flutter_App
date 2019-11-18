@@ -3,9 +3,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+Map _data;
+List _features;
 void main() async {
-  Map _data = await getQuakes();
-  print(_data['features'][0]['properties']);
+  _data = await getQuakes();
+  _features = _data['features'];
   runApp(new MaterialApp(
     title: 'Quakes',
     home: new Quakes(),
@@ -20,6 +22,41 @@ class Quakes extends StatelessWidget {
         title: new Text('Quakes'),
         centerTitle: true,
         backgroundColor: Colors.red,
+      ),
+      body: new Center(
+        child: new ListView.builder(
+          itemCount: _features.length,
+          padding: const EdgeInsets.all(15.0),
+          itemBuilder: (BuildContext context, int position){
+            if(position.isOdd) return new Divider();
+            final index = position ~/ 2;
+            return new ListTile(
+              title: new Text("Mag: ${_features[index]['properties']['mag']}",
+              style: TextStyle(fontSize: 19.5,
+              color: Colors.orange,
+              fontWeight: FontWeight.w500),
+              ),
+              subtitle: new Text("${_features[index]['properties']['place']}",
+              style: TextStyle(
+                fontSize: 14.5,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey,
+                fontStyle: FontStyle.italic),
+              ),
+              leading: new CircleAvatar(
+                backgroundColor: Colors.green,
+                child: new Text("${_features[index]['properties']['mag']}",
+                style: new TextStyle(
+                  fontSize: 16.5,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.normal
+                ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
