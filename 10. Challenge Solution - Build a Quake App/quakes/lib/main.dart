@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 Map _data;
 List _features;
@@ -30,9 +31,11 @@ class Quakes extends StatelessWidget {
           itemBuilder: (BuildContext context, int position){
             if(position.isOdd) return new Divider();
             final index = position ~/ 2;
+            var format = new DateFormat.yMMMMd("en_US").add_jm();
+            var date = format.format(new DateTime.fromMicrosecondsSinceEpoch(_features[index]['properties']['time']*1000, isUtc: true),);
             return new ListTile(
-              title: new Text("Mag: ${_features[index]['properties']['mag']}",
-              style: TextStyle(fontSize: 19.5,
+              title: new Text("At: $date",
+              style: TextStyle(fontSize: 15.5,
               color: Colors.orange,
               fontWeight: FontWeight.w500),
               ),
