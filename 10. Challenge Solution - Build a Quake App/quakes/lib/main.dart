@@ -6,9 +6,12 @@ import 'package:intl/intl.dart';
 
 Map _data;
 List _features;
+
 void main() async {
+
   _data = await getQuakes();
   _features = _data['features'];
+
   runApp(new MaterialApp(
     title: 'Quakes',
     home: new Quakes(),
@@ -29,10 +32,13 @@ class Quakes extends StatelessWidget {
           itemCount: _features.length,
           padding: const EdgeInsets.all(15.0),
           itemBuilder: (BuildContext context, int position){
+            
             if(position.isOdd) return new Divider();
+
             final index = position ~/ 2;
             var format = new DateFormat.yMMMMd("en_US").add_jm();
             var date = format.format(new DateTime.fromMicrosecondsSinceEpoch(_features[index]['properties']['time']*1000, isUtc: true),);
+
             return new ListTile(
               title: new Text("At: $date",
               style: TextStyle(fontSize: 15.5,
@@ -57,11 +63,26 @@ class Quakes extends StatelessWidget {
                 ),
                 ),
               ),
+              onTap: () {_showAlertMessage(context, "${_features[index]['properties']['title']}");},
             );
           },
         ),
       ),
     );
+  }
+
+  void _showAlertMessage(BuildContext context, String message) {
+    var alert = new AlertDialog(
+      title: new Text('Quakes'),
+      content: new Text(message),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: (){Navigator.pop(context);},
+          child: new Text('OK'),
+        )
+      ],
+    );
+    showDialog(context: context, child: alert);
   }
 
 }
