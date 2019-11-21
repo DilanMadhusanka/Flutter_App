@@ -28,11 +28,6 @@ class _ClimaticState extends State<Climatic> {
     }
   }
 
-  void showStuff() async {
-    Map data = await getWeather(util.appId, util.defaultCity);
-    print(data.toString());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +65,6 @@ class _ClimaticState extends State<Climatic> {
             child: new Image.asset('images/light_rain.png'),
           ),
           new Container(
-            //margin: const EdgeInsets.fromLTRB(30.0, 350.0, 0.0, 0.0),
             child: updateTempWidget(_cityEntered),
           )
         ],
