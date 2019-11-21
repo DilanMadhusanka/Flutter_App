@@ -13,10 +13,17 @@ class _ClimaticState extends State<Climatic> {
 
   Future _goToNextScreen(BuildContext context) async {
     Map results = await Navigator.of(context).push(
-      new MaterialPageRoute(builder: (BuildContext context) {
+      new MaterialPageRoute<Map>(builder: (BuildContext context) {
         return new ChangeCity();
       })
     );
+
+    if (results != null && results.containsKey('enter')) {
+      print(results['enter'].toString());
+    }
+    else {
+      print('Nothing!');
+    }
   }
 
   void showStuff() async {
@@ -100,6 +107,9 @@ class _ClimaticState extends State<Climatic> {
 }
 
 class ChangeCity extends StatelessWidget {
+
+  var _cityFieldController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,6 +126,31 @@ class ChangeCity extends StatelessWidget {
                 height: 1200.0,
                 fit: BoxFit.fill,
             ),
+          ),
+          new ListView(
+            children: <Widget>[
+              new ListTile(
+                title: new TextField(
+                  decoration: new InputDecoration(
+                    hintText: 'Enter City'
+                  ),
+                  controller: _cityFieldController,
+                  keyboardType: TextInputType.text,
+                ),
+              ),
+              new ListTile(
+                title: new FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context, {
+                      'enter': _cityFieldController.text
+                    });
+                  },
+                  textColor: Colors.white70,
+                  color: Colors.redAccent,
+                  child: new Text('Get Weather'),
+                ),
+              )
+            ],
           )
         ],
       ),
