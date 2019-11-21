@@ -11,6 +11,8 @@ class Climatic extends StatefulWidget {
 
 class _ClimaticState extends State<Climatic> {
 
+  String _cityEntered;
+
   Future _goToNextScreen(BuildContext context) async {
     Map results = await Navigator.of(context).push(
       new MaterialPageRoute<Map>(builder: (BuildContext context) {
@@ -19,7 +21,7 @@ class _ClimaticState extends State<Climatic> {
     );
 
     if (results != null && results.containsKey('enter')) {
-      print(results['enter'].toString());
+      _cityEntered = results['enter'].toString();
     }
     else {
       print('Nothing!');
@@ -59,7 +61,7 @@ class _ClimaticState extends State<Climatic> {
           new Container(
             alignment: Alignment.topRight,
             margin: const EdgeInsets.fromLTRB(0.0, 10.9, 20.9, 0.0),
-            child: new Text('Spokane',
+            child: new Text('${_cityEntered == null ? util.defaultCity : _cityEntered}',
             style: cityStyle(),
             ),
           ),
@@ -68,8 +70,8 @@ class _ClimaticState extends State<Climatic> {
             child: new Image.asset('images/light_rain.png'),
           ),
           new Container(
-            margin: const EdgeInsets.fromLTRB(30.0, 290.0, 0.0, 0.0),
-            child: updateTempWidget("Colombo"),
+            //margin: const EdgeInsets.fromLTRB(30.0, 350.0, 0.0, 0.0),
+            child: updateTempWidget(_cityEntered),
           )
         ],
       ),
@@ -84,16 +86,27 @@ class _ClimaticState extends State<Climatic> {
 
   Widget updateTempWidget(String city) {
     return new FutureBuilder(
-      future: getWeather(util.appId, city),
+      future: getWeather(util.appId, city == null ? util.defaultCity.toString() : city),
       builder: (BuildContext context, AsyncSnapshot<Map> snapshot){
         if(snapshot.hasData) {
           Map content = snapshot.data;
           return new Container(
+            margin: const EdgeInsets.fromLTRB(30.0, 250.0, 0.0, 0.0),
             child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new ListTile(
-                  title: new Text(content['main']['temp'].toString(),
+                  title: new Text(content['main']['temp'].toString() + " F",
                     style: tempStyle(),
+                  ),
+                  subtitle: new ListTile(
+                    title: new Text(
+                      "Humidity: ${content['main']['humidity'].toString()}\n"
+                      "Min: ${content['main']['temp_min'].toString()} F\n"
+                      "Max: ${content['main']['temp_max'].toString()} F",
+
+                      style: extraData(),
+                    ),
                   ),
                 )
               ],
@@ -163,6 +176,14 @@ TextStyle cityStyle() {
     color: Colors.white,
     fontSize: 22.9,
     fontStyle: FontStyle.italic
+  );
+}
+
+TextStyle extraData() {
+  return new TextStyle(
+    color: Colors.white70,
+    fontStyle: FontStyle.normal,
+    fontSize: 17.0
   );
 }
 
