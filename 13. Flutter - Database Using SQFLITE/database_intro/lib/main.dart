@@ -7,14 +7,31 @@ void main() async {
 
   var db = DatabaseHelper();
 
-  int savedUser = await db.saveUser(new User("Flutter", "dart"));
-  print("User saved: $savedUser");
+  // int savedUser = await db.saveUser(new User("React", "javaScript"));
+  // print("User saved: $savedUser");
 
   _users = await db.getAllUsers();
   for(int i = 0; i < _users.length; i++) {
     User user = User.map(_users[i]);
-    print("${user.userName}");
+    print("Username: ${user.userName}, Id: ${user.id}");
   }
+
+  int count = await db.getCount();
+  print("Count: $count");
+
+  User react = await db.getUser(3);
+  print("Got username: ${react.userName}");
+
+  User reactUpdate = User.fromMap({
+    "userName" : "UpdatedReact",
+    "password" : "updatedPassword",
+    "id" : 3
+  });
+
+  await db.upadateUser(reactUpdate);
+
+  // int deleteItem = await db.deleteUser(4);
+  // print(deleteItem);
 
   runApp(new MaterialApp(
     title: 'Database',
