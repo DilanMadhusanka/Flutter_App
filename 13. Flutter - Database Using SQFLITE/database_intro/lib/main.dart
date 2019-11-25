@@ -1,8 +1,21 @@
+import 'package:database_intro/models/user.dart';
+import 'package:database_intro/utils/database_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 
-void main() {
+List _users;
+void main() async {
+
+  var db = DatabaseHelper();
+
+  int savedUser = await db.saveUser(new User("Flutter", "dart"));
+  print("User saved: $savedUser");
+
+  _users = await db.getAllUsers();
+  for(int i = 0; i < _users.length; i++) {
+    User user = User.map(_users[i]);
+    print("${user.userName}");
+  }
+
   runApp(new MaterialApp(
     title: 'Database',
     home: new Home(),
