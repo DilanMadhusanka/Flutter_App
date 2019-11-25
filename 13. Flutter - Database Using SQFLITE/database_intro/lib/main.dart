@@ -7,7 +7,7 @@ void main() async {
 
   var db = DatabaseHelper();
 
-  // int savedUser = await db.saveUser(new User("React", "javaScript"));
+  // int savedUser = await db.saveUser(new User("NodeJs", "javaScript"));
   // print("User saved: $savedUser");
 
   _users = await db.getAllUsers();
@@ -22,13 +22,13 @@ void main() async {
   User react = await db.getUser(3);
   print("Got username: ${react.userName}");
 
-  User reactUpdate = User.fromMap({
-    "userName" : "UpdatedReact",
-    "password" : "updatedPassword",
-    "id" : 3
-  });
+  // User reactUpdate = User.fromMap({
+  //   "userName" : "UpdatedReact",
+  //   "password" : "updatedPassword",
+  //   "id" : 3
+  // });
 
-  await db.upadateUser(reactUpdate);
+  // await db.upadateUser(reactUpdate);
 
   // int deleteItem = await db.deleteUser(4);
   // print(deleteItem);
@@ -47,6 +47,23 @@ class Home extends StatelessWidget {
         title: new Text("Database"),
         centerTitle: true,
         backgroundColor: Colors.lightGreen,
+      ),
+      body: new ListView.builder(
+        itemCount: _users.length,
+        itemBuilder: (_, int position) {
+          return new Card(
+            color: Colors.white,
+            elevation: 12.0,
+            child: new ListTile(
+              leading: new CircleAvatar(
+                child: new Text("${User.fromMap(_users[position]).userName.substring(0, 1)}"),
+              ),
+              title: new Text("User: ${User.fromMap(_users[position]).userName}"),
+              subtitle: new Text("Id: ${User.fromMap(_users[position]).id}"),
+              onTap: ()=> debugPrint("${User.fromMap(_users[position]).password}"),
+            ),
+          );
+        },
       ),
     );
   }
